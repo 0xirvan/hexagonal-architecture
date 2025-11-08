@@ -3,6 +3,7 @@ package inmemory
 import (
 	"context"
 	"sync"
+	"time"
 
 	"github.com/0xirvan/tta-svelte-go/server/internal/core/domain"
 	"github.com/0xirvan/tta-svelte-go/server/internal/core/port"
@@ -68,4 +69,77 @@ func (r *TodoRepository) FindPaginated(ctx context.Context, page, size int) ([]*
 	end := min(start+size, total)
 
 	return todos[start:end], total, nil
+}
+
+// FindAll retrieves all todos
+func (r *TodoRepository) FindAll(ctx context.Context) ([]*domain.Todo, error) {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+
+	var todos []*domain.Todo
+	for _, todo := range r.store {
+		todos = append(todos, todo)
+	}
+
+	return todos, nil
+}
+
+// MarkAsDone marks a todo as done
+func (r *TodoRepository) MarkAsDone(ctx context.Context, id uint) error {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	todo, exists := r.store[id]
+	if !exists {
+		return domain.ErrTodoNotFound
+	}
+
+	todo.IsDone = true
+	now := time.Now()
+	todo.CompletedAt = &now
+
+	return nil
+}
+
+// MarkAsUndone marks a todo as undone
+func (r *TodoRepository) MarkAsUndone(ctx context.Context, id uint) error {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	todo, exists := r.store[id]
+	if !exists {
+		return domain.ErrTodoNotFound
+	}
+
+	todo.IsDone = false
+	todo.CompletedAt = nil
+
+	return nil
+}
+
+// Delete removes a todo by its ID
+func (r *TodoRepository) Delete(ctx context.Context, id uint) error {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	if _, exists := r.store[id]; !exists {
+		return domain.ErrTodoNotFound
+	}
+
+	delete(r.store, id)
+	return nil
+}
+
+// Update modifies an existing todo
+func (r *TodoRepository) Update(ctx context.Context, todo *domain.Todo) (*domain.Todo, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	_, exists := r.store[todo.ID]
+	if !exists {
+		return nil, domain.ErrTodoNotFound
+	}
+
+	r.store[todo.ID] = todo
+	return todo, nil
 }
