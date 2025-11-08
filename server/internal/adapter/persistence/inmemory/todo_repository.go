@@ -10,8 +10,9 @@ import (
 
 // TodoRepository implements port.TodoRepository in memory
 type TodoRepository struct {
-	mu    sync.RWMutex          // mutex for concurrent access
-	store map[uint]*domain.Todo // holds todos in memory using a map
+	mu     sync.RWMutex          // mutex for concurrent access
+	store  map[uint]*domain.Todo // holds todos in memory using a map
+	lastID uint                  // keeps track of the last used ID
 }
 
 // NewTodoRepository creates a new instance of TodoRepository
@@ -25,6 +26,10 @@ func NewTodoRepository() port.TodoRepository {
 func (r *TodoRepository) Create(ctx context.Context, todo *domain.Todo) (*domain.Todo, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
+
+	// Increment lastID and assign to the new todo
+	r.lastID++
+	todo.ID = r.lastID
 
 	r.store[todo.ID] = todo
 	return todo, nil
