@@ -1,0 +1,66 @@
+package inmemory
+
+import (
+	"context"
+	"sync"
+
+	"github.com/0xirvan/tta-svelte-go/server/internal/core/domain"
+	"github.com/0xirvan/tta-svelte-go/server/internal/core/port"
+)
+
+// TodoRepository implements port.TodoRepository in memory
+type TodoRepository struct {
+	mu    sync.RWMutex          // mutex for concurrent access
+	store map[uint]*domain.Todo // holds todos in memory using a map
+}
+
+// NewTodoRepository creates a new instance of TodoRepository
+func NewTodoRepository() port.TodoRepository {
+	return &TodoRepository{
+		store: make(map[uint]*domain.Todo),
+	}
+}
+
+// Create stores a new todo in memory
+func (r *TodoRepository) Create(ctx context.Context, todo *domain.Todo) (*domain.Todo, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	r.store[todo.ID] = todo
+	return todo, nil
+}
+
+// FindByID retrieves a todo by its ID
+func (r *TodoRepository) FindByID(ctx context.Context, id uint) (*domain.Todo, error) {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+
+	todo, exists := r.store[id]
+	if !exists {
+		return nil, domain.ErrTodoNotFound
+	}
+
+	return todo, nil
+}
+
+// FindPaginated retrieves todos in a paginated manner
+func (r *TodoRepository) FindPaginated(ctx context.Context, page, size int) ([]*domain.Todo, int, error) {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+
+	var todos []*domain.Todo
+	for _, todo := range r.store {
+		todos = append(todos, todo)
+	}
+
+	total := len(todos)
+
+	start := (page - 1) * size
+	if start > total {
+		return []*domain.Todo{}, total, nil
+	}
+
+	end := min(start+size, total)
+
+	return todos[start:end], total, nil
+}
