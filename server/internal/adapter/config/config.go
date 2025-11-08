@@ -6,11 +6,13 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// Container for all configurations
 type AppContainer struct {
 	App  *App
 	HTTP *HTTP
 }
 
+// New loads environment variables and returns the application configuration
 func New() (*AppContainer, error) {
 	if err := godotenv.Load(); err != nil {
 		return nil, err
@@ -32,6 +34,8 @@ func New() (*AppContainer, error) {
 	}, nil
 }
 
+// getEnv retrieves the vaulue of the envirment variable named by the key
+// if the variable is empty, it returns the fallback value
 func getEnv(key, fallback string) string {
 	if val := os.Getenv(key); val == "" {
 		return val
