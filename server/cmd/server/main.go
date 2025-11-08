@@ -2,6 +2,7 @@ package main
 
 import (
 	"log/slog"
+	"os"
 
 	"github.com/0xirvan/tta-svelte-go/server/internal/adapter/config"
 )
@@ -9,6 +10,7 @@ import (
 func main() {
 	if err := run(); err != nil {
 		slog.Error("application terminated with error", slog.String("error", err.Error()))
+		os.Exit(1)
 	}
 }
 
