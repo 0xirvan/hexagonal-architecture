@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/0xirvan/tta-svelte-go/server/internal/adapter/config"
+	customMiddleware "github.com/0xirvan/tta-svelte-go/server/internal/adapter/delivery/http/middleware"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -28,6 +29,7 @@ func NewRouter(
 func setupMiddleware(e *echo.Echo, cfg *config.HTTP) {
 	e.Use(middleware.Recover())
 	e.Use(middleware.Logger())
+	e.Use(customMiddleware.ErrorMiddleware)
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: strings.Split(cfg.AllowedOrigins, ","),
 		AllowMethods: []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodPatch, http.MethodDelete, http.MethodOptions},
