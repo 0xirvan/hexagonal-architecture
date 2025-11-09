@@ -3,6 +3,7 @@ package todo
 import (
 	"time"
 
+	"github.com/0xirvan/tta-svelte-go/server/internal/adapter/delivery/http/dto"
 	"github.com/0xirvan/tta-svelte-go/server/internal/core/domain"
 	"github.com/0xirvan/tta-svelte-go/server/internal/shared/ptr"
 )
@@ -16,6 +17,9 @@ type TodoResponse struct {
 	CompletedAt *string `json:"completed_at,omitempty"`
 	CreatedAt   string  `json:"created_at"`
 }
+
+// TodoPaginatedResponse represents a paginated response of todo items
+type TodoPaginatedResponse = dto.PaginatedResponse[TodoResponse]
 
 // ToTodoResponse maps a domain.Todo to a TodoResponse
 func ToTodoResponse(t *domain.Todo) TodoResponse {
@@ -42,4 +46,24 @@ func ToTodoResponseList(list []*domain.Todo) []TodoResponse {
 		out[i] = ToTodoResponse(t)
 	}
 	return out
+}
+
+// ToTodoPaginatedResponse converts list of domain.Todo + metadata to TodoPaginatedResponse
+func ToTodoPaginatedResponse(
+	todos []*domain.Todo,
+	totalItems int,
+	page int,
+	pageSize int,
+) TodoPaginatedResponse {
+	totalPages := (totalItems + pageSize - 1) / pageSize
+
+	return TodoPaginatedResponse{
+		Data:        ToTodoResponseList(todos),
+		TotalItems:  totalItems,
+		TotalPages:  totalPages,
+		CurrentPage: page,
+		PageSize:    pageSize,
+		HasNext:     page < totalPages,
+		HasPrev:     page > 1,
+	}
 }
