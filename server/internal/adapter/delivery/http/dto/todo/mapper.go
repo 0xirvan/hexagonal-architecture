@@ -1,0 +1,45 @@
+package todo
+
+import (
+	"time"
+
+	"github.com/0xirvan/tta-svelte-go/server/internal/core/domain"
+	"github.com/0xirvan/tta-svelte-go/server/internal/shared/ptr"
+)
+
+// TodoResponse represents the response payload for a todo item
+type TodoResponse struct {
+	ID          uint    `json:"id"`
+	Title       string  `json:"title"`
+	Description string  `json:"description"`
+	IsDone      bool    `json:"is_done"`
+	CompletedAt *string `json:"completed_at,omitempty"`
+	CreatedAt   string  `json:"created_at"`
+}
+
+// ToTodoResponse maps a domain.Todo to a TodoResponse
+func ToTodoResponse(t *domain.Todo) TodoResponse {
+	var completed *string
+	if t.CompletedAt != nil {
+		s := t.CompletedAt.Format(time.RFC3339)
+		completed = ptr.Ptr(s)
+	}
+
+	return TodoResponse{
+		ID:          t.ID,
+		Title:       t.Title,
+		Description: t.Description,
+		IsDone:      t.IsDone,
+		CompletedAt: completed,
+		CreatedAt:   t.CreatedAt.Format(time.RFC3339),
+	}
+}
+
+// ToTodoResponseList maps a list of domain.Todo to a list of TodoResponse
+func ToTodoResponseList(list []*domain.Todo) []TodoResponse {
+	out := make([]TodoResponse, len(list))
+	for i, t := range list {
+		out[i] = ToTodoResponse(t)
+	}
+	return out
+}
