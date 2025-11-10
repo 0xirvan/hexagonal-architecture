@@ -1,4 +1,4 @@
-# Hexagonal Architecturei Template
+# Hexagonal Architecture Template
 
 [![Go Version](https://img.shields.io/badge/Go-1.21+-00ADD8?style=flat&logo=go)](https://golang.org)
 [![Echo](https://img.shields.io/badge/Echo-v4-00ADD8?style=flat)](https://echo.labstack.com/)
