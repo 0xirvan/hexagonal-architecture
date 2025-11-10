@@ -3,7 +3,7 @@ package todo
 import (
 	"context"
 
-	"github.com/0xirvan/tta-svelte-go/server/internal/core/port"
+	"github.com/0xirvan/tdl-svelte-go/server/internal/core/port"
 )
 
 type MarkTodoUndoneUsecase struct {

@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"github.com/0xirvan/tta-svelte-go/server/internal/adapter/delivery/http/dto"
-	"github.com/0xirvan/tta-svelte-go/server/internal/adapter/delivery/http/helper"
+	"github.com/0xirvan/tdl-svelte-go/server/internal/adapter/delivery/http/dto"
+	"github.com/0xirvan/tdl-svelte-go/server/internal/adapter/delivery/http/helper"
 	"github.com/labstack/echo/v4"
 )
 

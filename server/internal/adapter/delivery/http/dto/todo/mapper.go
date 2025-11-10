@@ -3,9 +3,9 @@ package todo
 import (
 	"time"
 
-	"github.com/0xirvan/tta-svelte-go/server/internal/adapter/delivery/http/dto"
-	"github.com/0xirvan/tta-svelte-go/server/internal/core/domain"
-	"github.com/0xirvan/tta-svelte-go/server/internal/shared/ptr"
+	"github.com/0xirvan/tdl-svelte-go/server/internal/adapter/delivery/http/dto"
+	"github.com/0xirvan/tdl-svelte-go/server/internal/core/domain"
+	"github.com/0xirvan/tdl-svelte-go/server/internal/shared/ptr"
 )
 
 // TodoResponse represents the response payload for a todo item

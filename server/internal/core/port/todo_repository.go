@@ -3,7 +3,7 @@ package port
 import (
 	"context"
 
-	"github.com/0xirvan/tta-svelte-go/server/internal/core/domain"
+	"github.com/0xirvan/tdl-svelte-go/server/internal/core/domain"
 )
 
 type TodoRepository interface {

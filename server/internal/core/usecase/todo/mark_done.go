@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/0xirvan/tta-svelte-go/server/internal/core/port"
-	"github.com/0xirvan/tta-svelte-go/server/internal/shared/ptr"
+	"github.com/0xirvan/tdl-svelte-go/server/internal/core/port"
+	"github.com/0xirvan/tdl-svelte-go/server/internal/shared/ptr"
 )
 
 type MarkTodoDoneUsecase struct {

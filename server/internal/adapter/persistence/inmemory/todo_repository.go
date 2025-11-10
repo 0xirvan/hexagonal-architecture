@@ -4,8 +4,8 @@ import (
 	"context"
 	"sync"
 
-	"github.com/0xirvan/tta-svelte-go/server/internal/core/domain"
-	"github.com/0xirvan/tta-svelte-go/server/internal/core/port"
+	"github.com/0xirvan/tdl-svelte-go/server/internal/core/domain"
+	"github.com/0xirvan/tdl-svelte-go/server/internal/core/port"
 )
 
 // TodoRepository implements port.TodoRepository in memory
