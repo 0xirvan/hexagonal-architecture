@@ -35,7 +35,7 @@ func (h *TodoHandler) CreateHandler(c echo.Context) error {
 		return err
 	}
 
-	return c.JSON(http.StatusCreated, dto.ToTodoResponse(t))
+	return helper.WriteSingle(c, http.StatusCreated, dto.ToTodoResponse(t))
 }
 
 func (h *TodoHandler) GetHandler(c echo.Context) error {
@@ -49,7 +49,7 @@ func (h *TodoHandler) GetHandler(c echo.Context) error {
 		return err
 	}
 
-	return c.JSON(http.StatusOK, dto.ToTodoResponse(t))
+	return helper.WriteSingle(c, http.StatusOK, dto.ToTodoResponse(t))
 }
 
 func (h *TodoHandler) ListHandler(c echo.Context) error {
@@ -58,7 +58,7 @@ func (h *TodoHandler) ListHandler(c echo.Context) error {
 		return err
 	}
 
-	return c.JSON(http.StatusOK, dto.ToTodoResponseList(todos))
+	return helper.WriteList(c, http.StatusOK, dto.ToTodoResponseList(todos))
 }
 
 func (h *TodoHandler) ListPaginatedHandler(c echo.Context) error {
@@ -77,7 +77,7 @@ func (h *TodoHandler) ListPaginatedHandler(c echo.Context) error {
 		return err
 	}
 
-	return c.JSON(http.StatusOK, dto.ToTodoPaginatedResponse(todos, totalItems, page, size))
+	return helper.WritePaginated(c, http.StatusOK, dto.ToTodoResponseList(todos), totalItems, page, size)
 }
 
 func (h *TodoHandler) UpdateHandler(c echo.Context) error {
@@ -100,7 +100,7 @@ func (h *TodoHandler) UpdateHandler(c echo.Context) error {
 		return err
 	}
 
-	return c.JSON(http.StatusOK, dto.ToTodoResponse(t))
+	return helper.WriteSingle(c, http.StatusOK, dto.ToTodoResponse(t))
 }
 
 func (h *TodoHandler) DeleteHandler(c echo.Context) error {
@@ -127,7 +127,7 @@ func (h *TodoHandler) MarkDoneHandler(c echo.Context) error {
 		return err
 	}
 
-	return c.JSON(http.StatusOK, dto.ToTodoResponse(t))
+	return helper.WriteSingle(c, http.StatusOK, dto.ToTodoResponse(t))
 }
 
 func (h *TodoHandler) MarkUndoneHandler(c echo.Context) error {
@@ -141,5 +141,5 @@ func (h *TodoHandler) MarkUndoneHandler(c echo.Context) error {
 		return err
 	}
 
-	return c.JSON(http.StatusOK, dto.ToTodoResponse(t))
+	return helper.WriteSingle(c, http.StatusOK, dto.ToTodoResponse(t))
 }

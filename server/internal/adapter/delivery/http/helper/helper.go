@@ -3,6 +3,7 @@ package helper
 import (
 	"strconv"
 
+	"github.com/0xirvan/hexagonal-architecture/server/internal/adapter/delivery/http/dto"
 	"github.com/labstack/echo/v4"
 )
 
@@ -16,6 +17,23 @@ func WriteErrorResponse(c echo.Context, status int, title string, detail string)
 			"status": status,
 		},
 	})
+}
+
+// WriteList writes a standardized list response to the client
+func WriteList[T any](c echo.Context, status int, items []T) error {
+	return c.JSON(status, map[string]any{
+		"data": items,
+	})
+}
+
+// WriteSingle writes a standardized single item response to the client
+func WriteSingle[T any](c echo.Context, status int, item T) error {
+	return c.JSON(status, dto.ToSingleResponse(item))
+}
+
+// WritePaginated writes a standardized paginated response to the client
+func WritePaginated[T any](c echo.Context, status int, items []T, total, page, size int) error {
+	return c.JSON(status, dto.ToPaginatedResponse(items, total, page, size))
 }
 
 // StrToUint converts a string to uint
