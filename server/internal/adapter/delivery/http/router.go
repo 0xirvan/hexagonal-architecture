@@ -5,7 +5,9 @@ import (
 	"strings"
 
 	"github.com/0xirvan/hexagonal-architecture/server/internal/adapter/config"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/adapter/delivery/http/handler"
 	customMiddleware "github.com/0xirvan/hexagonal-architecture/server/internal/adapter/delivery/http/middleware"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/adapter/delivery/http/routes"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -18,7 +20,7 @@ type Router struct {
 // NewRouter creates a new Echo router instance
 func NewRouter(
 	cfg *config.HTTP,
-	todoHandler *TodoHandler,
+	todoHandler *handler.TodoHandler,
 ) *Router {
 	e := echo.New()
 
@@ -34,7 +36,7 @@ func NewRouter(
 
 	v1 := e.Group("/api/v1")
 
-	RegisterTodoRoutes(v1, todoHandler)
+	routes.RegisterTodoRoutes(v1, todoHandler)
 
 	return &Router{e}
 }

@@ -8,8 +8,10 @@ package app
 
 import (
 	"context"
+
 	"github.com/0xirvan/hexagonal-architecture/server/internal/adapter/config"
 	"github.com/0xirvan/hexagonal-architecture/server/internal/adapter/delivery/http"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/adapter/delivery/http/handler"
 	"github.com/0xirvan/hexagonal-architecture/server/internal/adapter/persistence/inmemory"
 	"github.com/0xirvan/hexagonal-architecture/server/internal/core/usecase/todo"
 	"github.com/google/wire"
@@ -21,7 +23,7 @@ func InitializeHTTPApp(ctx context.Context, cfg *config.AppContainer) (*HTTPApp,
 	configHTTP := ProvideHTTPConfig(cfg)
 	todoRepository := inmemory.NewTodoRepository()
 	todoService := todo.NewService(todoRepository)
-	todoHandler := http.NewTodoHandler(todoService)
+	todoHandler := handler.NewTodoHandler(todoService)
 	router := http.NewRouter(configHTTP, todoHandler)
 	httpApp := NewHTTPApp(router, cfg)
 	return httpApp, nil
@@ -45,7 +47,7 @@ var repositorySet = wire.NewSet(inmemory.NewTodoRepository)
 var useCaseSet = wire.NewSet(todo.NewService)
 
 // Delivery layer
-var deliverySet = wire.NewSet(http.NewTodoHandler, http.NewRouter)
+var deliverySet = wire.NewSet(http.NewRouter, handler.NewTodoHandler)
 
 // All sets
 var appSet = wire.NewSet(

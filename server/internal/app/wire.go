@@ -10,6 +10,7 @@ import (
 
 	"github.com/0xirvan/hexagonal-architecture/server/internal/adapter/config"
 	httpdelivery "github.com/0xirvan/hexagonal-architecture/server/internal/adapter/delivery/http"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/adapter/delivery/http/handler"
 	"github.com/0xirvan/hexagonal-architecture/server/internal/adapter/persistence/inmemory"
 	"github.com/0xirvan/hexagonal-architecture/server/internal/core/usecase/todo"
 )
@@ -35,8 +36,8 @@ var useCaseSet = wire.NewSet(
 
 // Delivery layer
 var deliverySet = wire.NewSet(
-	httpdelivery.NewTodoHandler,
 	httpdelivery.NewRouter,
+	handler.NewTodoHandler,
 )
 
 // All sets
