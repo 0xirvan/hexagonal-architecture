@@ -18,6 +18,7 @@ type Router struct {
 // NewRouter creates a new Echo router instance
 func NewRouter(
 	cfg *config.HTTP,
+	todoHandler *TodoHandler,
 ) *Router {
 	e := echo.New()
 
@@ -28,6 +29,8 @@ func NewRouter(
 		AllowOrigins: strings.Split(cfg.AllowedOrigins, ","),
 		AllowMethods: []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodPatch, http.MethodDelete, http.MethodOptions},
 	}))
+
+	RegisterTodoRoutes(e, todoHandler)
 
 	return &Router{e}
 }
