@@ -2,7 +2,7 @@ package http
 
 import "github.com/labstack/echo/v4"
 
-func RegisterTodoRoutes(e *echo.Echo, h *TodoHandler) {
+func RegisterTodoRoutes(e *echo.Group, h *TodoHandler) {
 	g := e.Group("/todos")
 	g.GET("/:id", h.GetHandler)
 	g.GET("", h.ListHandler)

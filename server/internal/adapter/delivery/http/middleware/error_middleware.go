@@ -1,8 +1,11 @@
 package middleware
 
 import (
+	"net/http"
+
 	"github.com/0xirvan/tdl-svelte-go/server/internal/adapter/delivery/http/dto"
 	"github.com/0xirvan/tdl-svelte-go/server/internal/adapter/delivery/http/helper"
+	"github.com/0xirvan/tdl-svelte-go/server/internal/core/domain"
 	"github.com/labstack/echo/v4"
 )
 
@@ -15,6 +18,15 @@ func ErrorMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 			return nil
 		}
 
+		// validation errors
+		if vErr, ok := err.(domain.ValidationErrors); ok {
+			return c.JSON(http.StatusBadRequest, map[string]any{
+				"error":  "validation_error",
+				"fields": vErr,
+			})
+		}
+
+		// domains / business errors
 		status, title := dto.MapDomainError(err)
 		return helper.WriteErrorResponse(c, status, title, err.Error())
 	}

@@ -26,6 +26,10 @@ func (h *TodoHandler) CreateHandler(c echo.Context) error {
 		return domain.ErrInvalidRequestBody
 	}
 
+	if err := c.Validate(&req); err != nil {
+		return err
+	}
+
 	t, err := h.uc.Create.Execute(c.Request().Context(), req.Title, req.Description)
 	if err != nil {
 		return err
@@ -85,6 +89,10 @@ func (h *TodoHandler) UpdateHandler(c echo.Context) error {
 	var req dto.UpdateTodoRequest
 	if err := c.Bind(&req); err != nil {
 		return domain.ErrInvalidRequestBody
+	}
+
+	if err := c.Validate(&req); err != nil {
+		return err
 	}
 
 	t, err := h.uc.Update.Execute(c.Request().Context(), id, req.Title, req.Description)

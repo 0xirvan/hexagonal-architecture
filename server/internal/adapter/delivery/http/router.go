@@ -22,6 +22,8 @@ func NewRouter(
 ) *Router {
 	e := echo.New()
 
+	e.Validator = NewRequestValidator("en")
+
 	e.Use(middleware.Recover())
 	e.Use(middleware.Logger())
 	e.Use(customMiddleware.ErrorMiddleware)
@@ -30,7 +32,9 @@ func NewRouter(
 		AllowMethods: []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodPatch, http.MethodDelete, http.MethodOptions},
 	}))
 
-	RegisterTodoRoutes(e, todoHandler)
+	v1 := e.Group("/api/v1")
+
+	RegisterTodoRoutes(v1, todoHandler)
 
 	return &Router{e}
 }

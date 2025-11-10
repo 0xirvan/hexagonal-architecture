@@ -14,7 +14,7 @@ type TodoResponse struct {
 	Title       string  `json:"title"`
 	Description string  `json:"description"`
 	IsDone      bool    `json:"is_done"`
-	CompletedAt *string `json:"completed_at,omitempty"`
+	CompletedAt *string `json:"completed_at"`
 	CreatedAt   string  `json:"created_at"`
 }
 
