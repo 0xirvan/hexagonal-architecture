@@ -4,11 +4,11 @@
 [![Echo](https://img.shields.io/badge/Echo-v4-00ADD8?style=flat)](https://echo.labstack.com/)
 [![Wire](https://img.shields.io/badge/Wire-Dependency%20Injection-00ADD8?style=flat)](https://github.com/google/wire)
 
-Template aplikasi Go dengan **Hexagonal Architecture** (Ports & Adapters)
+A Go application template with **Hexagonal Architecture** (Ports & Adapters)
 
-## 🏗️ Arsitektur
+## 🏗️ Architecture
 
-Project ini menggunakan **Hexagonal Architecture** (juga dikenal sebagai Ports & Adapters Pattern) yang memisahkan business logic dari external dependencies.
+This project uses **Hexagonal Architecture** (also known as Ports & Adapters Pattern) which separates business logic from external dependencies.
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -31,15 +31,15 @@ Project ini menggunakan **Hexagonal Architecture** (juga dikenal sebagai Ports &
 
 #### 1. **Core Domain** (`internal/core/`)
 
-Berisi business logic yang independen dari framework dan external dependencies.
+Contains business logic that is independent from frameworks and external dependencies.
 
-- **Domain**: Entity dan business rules
-- **Port**: Interface untuk repository dan service
+- **Domain**: Entities and business rules
+- **Port**: Interfaces for repositories and services
 - **UseCase**: Business logic implementation
 
 #### 2. **Adapter** (`internal/adapter/`)
 
-Implementasi konkrit dari ports yang berinteraksi dengan dunia luar.
+Concrete implementations of ports that interact with the outside world.
 
 - **Delivery**: HTTP handlers, routes, middleware
 - **Persistence**: Database implementation (inmemory, sqlite, mysql, etc.)
@@ -47,7 +47,7 @@ Implementasi konkrit dari ports yang berinteraksi dengan dunia luar.
 
 #### 3. **App** (`internal/app/`)
 
-Application composition menggunakan Wire untuk dependency injection.
+Application composition using Wire for dependency injection.
 
 ## 📁 Struktur Project
 
@@ -117,7 +117,7 @@ Request → Handler → Service Interface → Use Case → Repository Interface 
 
 **Key Principle:** Adapters depend on Core, Core never depends on Adapters.
 
-## 🛠️ Teknologi
+## 🛠️ Technologies
 
 - **[Go 1.21+](https://golang.org/)** - Programming language
 - **[Echo v4](https://echo.labstack.com/)** - High performance HTTP framework
@@ -126,8 +126,8 @@ Request → Handler → Service Interface → Use Case → Repository Interface 
 
 ## 📦 Prerequisites
 
-- Go 1.21 atau lebih tinggi
-- Wire (untuk dependency injection)
+- Go 1.21 or higher
+- Wire (for dependency injection)
 
 Install Wire:
 
@@ -146,7 +146,7 @@ cd hexagonal-architecture/server
 
 ### 2. Update Module Name (Optional)
 
-Jika ingin menggunakan module name sendiri:
+If you want to use your own module name:
 
 ```bash
 # Update go.mod
@@ -184,7 +184,7 @@ cp .env.example .env
 go run cmd/server/main.go
 ```
 
-Server akan berjalan di `http://localhost:8080`
+Server will run on `http://localhost:8080`
 
 ### Patterns Used
 
@@ -197,14 +197,14 @@ Server akan berjalan di `http://localhost:8080`
 
 ## 🔄 Switching Persistence
 
-Untuk beralih dari in-memory ke SQLite:
+To switch from in-memory to SQLite:
 
-1. Implementasi SQLite repository di `internal/adapter/persistence/sqlite/`
-2. Update Wire di `internal/app/wire.go`:
+1. Implement SQLite repository in `internal/adapter/persistence/sqlite/`
+2. Update Wire in `internal/app/wire.go`:
 
 ```go
 var repositorySet = wire.NewSet(
-    sqlite.NewTodoRepository,  // Ganti dari inmemory
+    sqlite.NewTodoRepository,  // Change from inmemory
 )
 ```
 
