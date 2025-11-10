@@ -1,8 +1,9 @@
-module github.com/0xirvan/tta-svelte-go/server
+module github.com/0xirvan/tdl-svelte-go/server
 
 go 1.25.1
 
 require (
+	github.com/google/wire v0.7.0
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo/v4 v4.13.4
 )
