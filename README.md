@@ -1,4 +1,4 @@
-# Hexagonal Architecture Template
+# Go Hexagonal Architecture Template
 
 [![Go Version](https://img.shields.io/badge/Go-1.21+-00ADD8?style=flat&logo=go)](https://golang.org)
 [![Echo](https://img.shields.io/badge/Echo-v4-00ADD8?style=flat)](https://echo.labstack.com/)
@@ -177,9 +177,7 @@ go mod download
 ### 4. Generate Wire Dependencies
 
 ```bash
-cd internal/app
-wire
-cd ../..
+wire ./internal/app
 ```
 
 ### 5. Configure Environment
@@ -195,14 +193,6 @@ go run cmd/server/main.go
 ```
 
 Server akan berjalan di `http://localhost:8080`
-
-### Generate Wire Dependencies
-
-Setiap kali mengubah `wire.go`, regenerate dengan:
-
-```bash
-wire ./internal/app
-```
 
 ### Patterns Used
 
@@ -226,7 +216,7 @@ var repositorySet = wire.NewSet(
 )
 ```
 
-3. Regenerate Wire: `wire`
+3. Regenerate Wire: `wire ./internal/app`
 
 ## 📚 Resources
 
