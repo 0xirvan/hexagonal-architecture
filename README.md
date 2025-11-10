@@ -6,14 +6,6 @@
 
 Template aplikasi Go dengan **Hexagonal Architecture** (Ports & Adapters)
 
-## 📋 Daftar Isi
-
-- [Arsitektur](#-arsitektur)
-- [Struktur Project](#-struktur-project)
-- [Teknologi](#-teknologi)
-- [Prerequisites](#-prerequisites)
-- [Setup & Installation](#-setup--installation)
-
 ## 🏗️ Arsitektur
 
 Project ini menggunakan **Hexagonal Architecture** (juga dikenal sebagai Ports & Adapters Pattern) yang memisahkan business logic dari external dependencies.
