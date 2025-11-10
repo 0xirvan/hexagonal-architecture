@@ -21,13 +21,6 @@ func NewRouter(
 ) *Router {
 	e := echo.New()
 
-	setupMiddleware(e, cfg)
-
-	return &Router{e}
-}
-
-// setupMiddleware configures the middleware for the Echo instance
-func setupMiddleware(e *echo.Echo, cfg *config.HTTP) {
 	e.Use(middleware.Recover())
 	e.Use(middleware.Logger())
 	e.Use(customMiddleware.ErrorMiddleware)
@@ -35,4 +28,6 @@ func setupMiddleware(e *echo.Echo, cfg *config.HTTP) {
 		AllowOrigins: strings.Split(cfg.AllowedOrigins, ","),
 		AllowMethods: []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodPatch, http.MethodDelete, http.MethodOptions},
 	}))
+
+	return &Router{e}
 }
