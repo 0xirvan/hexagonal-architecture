@@ -4,8 +4,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/0xirvan/tdl-svelte-go/server/internal/core/port"
-	"github.com/0xirvan/tdl-svelte-go/server/internal/shared/ptr"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/core/domain"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/core/port"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/shared/ptr"
 )
 
 type MarkTodoDoneUsecase struct {
@@ -13,16 +14,15 @@ type MarkTodoDoneUsecase struct {
 }
 
 // Execute marks a todo item as done by its ID, is also updating the CompletedAt timestamp
-func (uc *MarkTodoDoneUsecase) Execute(ctx context.Context, id uint) error {
+func (uc *MarkTodoDoneUsecase) Execute(ctx context.Context, id uint) (*domain.Todo, error) {
 	todo, err := uc.Repo.FindByID(ctx, id)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	now := time.Now()
 	todo.IsDone = true
 	todo.CompletedAt = ptr.Ptr(now)
 
-	_, err = uc.Repo.Update(ctx, todo)
-	return err
+	return uc.Repo.Update(ctx, todo)
 }

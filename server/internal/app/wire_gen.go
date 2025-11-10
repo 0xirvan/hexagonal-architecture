@@ -8,10 +8,10 @@ package app
 
 import (
 	"context"
-	"github.com/0xirvan/tdl-svelte-go/server/internal/adapter/config"
-	"github.com/0xirvan/tdl-svelte-go/server/internal/adapter/delivery/http"
-	"github.com/0xirvan/tdl-svelte-go/server/internal/adapter/persistence/inmemory"
-	"github.com/0xirvan/tdl-svelte-go/server/internal/core/usecase/todo"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/adapter/config"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/adapter/delivery/http"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/adapter/persistence/inmemory"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/core/usecase/todo"
 	"github.com/google/wire"
 )
 
@@ -20,8 +20,8 @@ import (
 func InitializeHTTPApp(ctx context.Context, cfg *config.AppContainer) (*HTTPApp, error) {
 	configHTTP := ProvideHTTPConfig(cfg)
 	todoRepository := inmemory.NewTodoRepository()
-	service := todo.NewService(todoRepository)
-	todoHandler := http.NewTodoHandler(service)
+	todoService := todo.NewService(todoRepository)
+	todoHandler := http.NewTodoHandler(todoService)
 	router := http.NewRouter(configHTTP, todoHandler)
 	httpApp := NewHTTPApp(router, cfg)
 	return httpApp, nil

@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/0xirvan/tdl-svelte-go/server/internal/adapter/config"
-	customMiddleware "github.com/0xirvan/tdl-svelte-go/server/internal/adapter/delivery/http/middleware"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/adapter/config"
+	customMiddleware "github.com/0xirvan/hexagonal-architecture/server/internal/adapter/delivery/http/middleware"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )

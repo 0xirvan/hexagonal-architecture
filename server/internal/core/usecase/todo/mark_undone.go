@@ -3,7 +3,8 @@ package todo
 import (
 	"context"
 
-	"github.com/0xirvan/tdl-svelte-go/server/internal/core/port"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/core/domain"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/core/port"
 )
 
 type MarkTodoUndoneUsecase struct {
@@ -11,15 +12,14 @@ type MarkTodoUndoneUsecase struct {
 }
 
 // Execute marks a todo item as not done by its ID, also clearing the CompletedAt timestamp
-func (uc *MarkTodoUndoneUsecase) Execute(ctx context.Context, id uint) error {
+func (uc *MarkTodoUndoneUsecase) Execute(ctx context.Context, id uint) (*domain.Todo, error) {
 	todo, err := uc.Repo.FindByID(ctx, id)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	todo.IsDone = false
 	todo.CompletedAt = nil
 
-	_, err = uc.Repo.Update(ctx, todo)
-	return err
+	return uc.Repo.Update(ctx, todo)
 }

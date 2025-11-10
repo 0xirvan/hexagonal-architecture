@@ -3,9 +3,9 @@ package middleware
 import (
 	"net/http"
 
-	"github.com/0xirvan/tdl-svelte-go/server/internal/adapter/delivery/http/dto"
-	"github.com/0xirvan/tdl-svelte-go/server/internal/adapter/delivery/http/helper"
-	"github.com/0xirvan/tdl-svelte-go/server/internal/core/domain"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/adapter/delivery/http/dto"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/adapter/delivery/http/helper"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/core/domain"
 	"github.com/labstack/echo/v4"
 )
 

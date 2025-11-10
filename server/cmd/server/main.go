@@ -5,8 +5,8 @@ import (
 	"log/slog"
 	"os"
 
-	"github.com/0xirvan/tdl-svelte-go/server/internal/adapter/config"
-	"github.com/0xirvan/tdl-svelte-go/server/internal/app"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/adapter/config"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/app"
 )
 
 func main() {

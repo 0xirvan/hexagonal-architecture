@@ -8,10 +8,10 @@ import (
 
 	"github.com/google/wire"
 
-	"github.com/0xirvan/tdl-svelte-go/server/internal/adapter/config"
-	httpdelivery "github.com/0xirvan/tdl-svelte-go/server/internal/adapter/delivery/http"
-	"github.com/0xirvan/tdl-svelte-go/server/internal/adapter/persistence/inmemory"
-	"github.com/0xirvan/tdl-svelte-go/server/internal/core/usecase/todo"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/adapter/config"
+	httpdelivery "github.com/0xirvan/hexagonal-architecture/server/internal/adapter/delivery/http"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/adapter/persistence/inmemory"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/core/usecase/todo"
 )
 
 func ProvideHTTPConfig(cfg *config.AppContainer) *config.HTTP {

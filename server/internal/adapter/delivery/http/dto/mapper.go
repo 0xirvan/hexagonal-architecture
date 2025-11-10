@@ -4,7 +4,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/0xirvan/tdl-svelte-go/server/internal/core/domain"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/core/domain"
 )
 
 // MapDomainError maps domain errors to HTTP status codes and messages(pure error string)

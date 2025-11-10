@@ -1,4 +1,4 @@
-module github.com/0xirvan/tdl-svelte-go/server
+module github.com/0xirvan/hexagonal-architecture/server
 
 go 1.25.1
 

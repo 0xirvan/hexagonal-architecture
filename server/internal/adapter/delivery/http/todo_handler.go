@@ -3,20 +3,20 @@ package http
 import (
 	"net/http"
 
-	dto "github.com/0xirvan/tdl-svelte-go/server/internal/adapter/delivery/http/dto/todo"
-	"github.com/0xirvan/tdl-svelte-go/server/internal/adapter/delivery/http/helper"
-	"github.com/0xirvan/tdl-svelte-go/server/internal/core/domain"
-	"github.com/0xirvan/tdl-svelte-go/server/internal/core/usecase/todo"
+	dto "github.com/0xirvan/hexagonal-architecture/server/internal/adapter/delivery/http/dto/todo"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/adapter/delivery/http/helper"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/core/domain"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/core/port"
 
 	"github.com/labstack/echo/v4"
 )
 
 type TodoHandler struct {
-	uc *todo.Service
+	todoService port.TodoService
 }
 
-func NewTodoHandler(uc *todo.Service) *TodoHandler {
-	return &TodoHandler{uc: uc}
+func NewTodoHandler(todoService port.TodoService) *TodoHandler {
+	return &TodoHandler{todoService: todoService}
 }
 
 func (h *TodoHandler) CreateHandler(c echo.Context) error {
@@ -30,7 +30,7 @@ func (h *TodoHandler) CreateHandler(c echo.Context) error {
 		return err
 	}
 
-	t, err := h.uc.Create.Execute(c.Request().Context(), req.Title, req.Description)
+	t, err := h.todoService.CreateTodo(c.Request().Context(), req.Title, req.Description)
 	if err != nil {
 		return err
 	}
@@ -44,7 +44,7 @@ func (h *TodoHandler) GetHandler(c echo.Context) error {
 		return domain.ErrInvalidID
 	}
 
-	t, err := h.uc.Get.Execute(c.Request().Context(), uint(id))
+	t, err := h.todoService.GetTodo(c.Request().Context(), uint(id))
 	if err != nil {
 		return err
 	}
@@ -53,7 +53,7 @@ func (h *TodoHandler) GetHandler(c echo.Context) error {
 }
 
 func (h *TodoHandler) ListHandler(c echo.Context) error {
-	todos, err := h.uc.List.Execute(c.Request().Context())
+	todos, err := h.todoService.ListTodos(c.Request().Context())
 	if err != nil {
 		return err
 	}
@@ -72,7 +72,7 @@ func (h *TodoHandler) ListPaginatedHandler(c echo.Context) error {
 		size = 10
 	}
 
-	todos, totalItems, err := h.uc.ListPaginated.Execute(c.Request().Context(), page, size)
+	todos, totalItems, err := h.todoService.ListTodosPaginated(c.Request().Context(), page, size)
 	if err != nil {
 		return err
 	}
@@ -95,7 +95,7 @@ func (h *TodoHandler) UpdateHandler(c echo.Context) error {
 		return err
 	}
 
-	t, err := h.uc.Update.Execute(c.Request().Context(), id, req.Title, req.Description)
+	t, err := h.todoService.UpdateTodo(c.Request().Context(), id, req.Title, req.Description)
 	if err != nil {
 		return err
 	}
@@ -109,7 +109,7 @@ func (h *TodoHandler) DeleteHandler(c echo.Context) error {
 		return domain.ErrInvalidID
 	}
 
-	if err := h.uc.Delete.Execute(c.Request().Context(), id); err != nil {
+	if err := h.todoService.DeleteTodo(c.Request().Context(), id); err != nil {
 		return err
 	}
 
@@ -122,12 +122,12 @@ func (h *TodoHandler) MarkDoneHandler(c echo.Context) error {
 		return domain.ErrInvalidID
 	}
 
-	err = h.uc.Done.Execute(c.Request().Context(), id)
+	t, err := h.todoService.MarkTodoDone(c.Request().Context(), id)
 	if err != nil {
 		return err
 	}
 
-	return c.NoContent(http.StatusNoContent)
+	return c.JSON(http.StatusOK, dto.ToTodoResponse(t))
 }
 
 func (h *TodoHandler) MarkUndoneHandler(c echo.Context) error {
@@ -136,10 +136,10 @@ func (h *TodoHandler) MarkUndoneHandler(c echo.Context) error {
 		return domain.ErrInvalidID
 	}
 
-	err = h.uc.Undone.Execute(c.Request().Context(), id)
+	t, err := h.todoService.MarkTodoUndone(c.Request().Context(), id)
 	if err != nil {
 		return err
 	}
 
-	return c.NoContent(http.StatusNoContent)
+	return c.JSON(http.StatusOK, dto.ToTodoResponse(t))
 }

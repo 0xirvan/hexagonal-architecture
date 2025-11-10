@@ -1,7 +1,7 @@
 package http
 
 import (
-	"github.com/0xirvan/tdl-svelte-go/server/internal/core/domain"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/core/domain"
 	"github.com/go-playground/locales/en"
 	"github.com/go-playground/locales/id"
 	ut "github.com/go-playground/universal-translator"

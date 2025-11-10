@@ -9,8 +9,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/0xirvan/tdl-svelte-go/server/internal/adapter/config"
-	httpdelivery "github.com/0xirvan/tdl-svelte-go/server/internal/adapter/delivery/http"
+	"github.com/0xirvan/hexagonal-architecture/server/internal/adapter/config"
+	httpdelivery "github.com/0xirvan/hexagonal-architecture/server/internal/adapter/delivery/http"
 )
 
 type HTTPApp struct {
