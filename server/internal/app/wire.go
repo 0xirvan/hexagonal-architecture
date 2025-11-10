@@ -18,18 +18,37 @@ func ProvideHTTPConfig(cfg *config.AppContainer) *config.HTTP {
 	return cfg.HTTP
 }
 
-var todoSet = wire.NewSet(
+// Infrastructure providers
+var infraSet = wire.NewSet(
+	ProvideHTTPConfig,
+)
+
+// Repository layer
+var repositorySet = wire.NewSet(
 	inmemory.NewTodoRepository,
+)
+
+// Use case layer
+var useCaseSet = wire.NewSet(
 	todo.NewService,
+)
+
+// Delivery layer
+var deliverySet = wire.NewSet(
 	httpdelivery.NewTodoHandler,
+	httpdelivery.NewRouter,
+)
+
+// All sets
+var appSet = wire.NewSet(
+	infraSet,
+	repositorySet,
+	useCaseSet,
+	deliverySet,
+	NewHTTPApp,
 )
 
 func InitializeHTTPApp(ctx context.Context, cfg *config.AppContainer) (*HTTPApp, error) {
-	wire.Build(
-		todoSet,
-		ProvideHTTPConfig,
-		httpdelivery.NewRouter,
-		NewHTTPApp,
-	)
+	wire.Build(appSet)
 	return &HTTPApp{}, nil
 }

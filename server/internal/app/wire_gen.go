@@ -19,11 +19,11 @@ import (
 
 func InitializeHTTPApp(ctx context.Context, cfg *config.AppContainer) (*HTTPApp, error) {
 	configHTTP := ProvideHTTPConfig(cfg)
-	router := http.NewRouter(configHTTP)
 	todoRepository := inmemory.NewTodoRepository()
 	service := todo.NewService(todoRepository)
 	todoHandler := http.NewTodoHandler(service)
-	httpApp := NewHTTPApp(router, cfg, todoHandler)
+	router := http.NewRouter(configHTTP, todoHandler)
+	httpApp := NewHTTPApp(router, cfg)
 	return httpApp, nil
 }
 
@@ -33,4 +33,25 @@ func ProvideHTTPConfig(cfg *config.AppContainer) *config.HTTP {
 	return cfg.HTTP
 }
 
-var todoSet = wire.NewSet(inmemory.NewTodoRepository, todo.NewService, http.NewTodoHandler)
+// Infrastructure providers
+var infraSet = wire.NewSet(
+	ProvideHTTPConfig,
+)
+
+// Repository layer
+var repositorySet = wire.NewSet(inmemory.NewTodoRepository)
+
+// Use case layer
+var useCaseSet = wire.NewSet(todo.NewService)
+
+// Delivery layer
+var deliverySet = wire.NewSet(http.NewTodoHandler, http.NewRouter)
+
+// All sets
+var appSet = wire.NewSet(
+	infraSet,
+	repositorySet,
+	useCaseSet,
+	deliverySet,
+	NewHTTPApp,
+)

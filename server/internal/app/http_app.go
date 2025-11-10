@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/0xirvan/tdl-svelte-go/server/internal/adapter/config"
-	"github.com/0xirvan/tdl-svelte-go/server/internal/adapter/delivery/http"
 	httpdelivery "github.com/0xirvan/tdl-svelte-go/server/internal/adapter/delivery/http"
 )
 
@@ -22,9 +21,7 @@ type HTTPApp struct {
 func NewHTTPApp(
 	router *httpdelivery.Router,
 	cfg *config.AppContainer,
-	todoHandler *http.TodoHandler,
 ) *HTTPApp {
-	http.RegisterTodoRoutes(router.Echo, todoHandler)
 	return &HTTPApp{router: router, cfg: cfg}
 }
 
