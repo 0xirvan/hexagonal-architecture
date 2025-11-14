@@ -24,8 +24,9 @@ func New() (*AppContainer, error) {
 	}
 
 	http := &HTTP{
-		Host: getEnv("HTTP_HOST", "localhost"),
-		Port: getEnv("HTTP_PORT", "8080"),
+		Host:           getEnv("HTTP_HOST", "localhost"),
+		Port:           getEnv("HTTP_PORT", "8080"),
+		AllowedOrigins: getEnv("HTTP_ALLOWED_ORIGINS", "*"),
 	}
 
 	return &AppContainer{
